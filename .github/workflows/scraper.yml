@@ -19,7 +19,14 @@ jobs:
 
       - name: Install Dependencies
         run: |
+          pip install --upgrade pip
           pip install -r requirements.txt
+          pip install chromedriver-autoinstaller  # Ensure chromedriver_autoinstaller is installed
+
+      - name: Install Google Chrome
+        run: |
+          sudo apt update
+          sudo apt install -y google-chrome-stable
 
       - name: Run Scraper
         run: python scripts/trustpilot_scraper.py
@@ -29,5 +36,5 @@ jobs:
           git config --global user.email "rkonik550@gmail.com"
           git config --global user.name "Onik550"
           git add data/trustpilot_reviews.db data/trustpilot_reviews.csv
-          git commit -m "Auto-update scraped Trustpilot reviews"
+          git commit -m "Auto-update scraped Trustpilot reviews" || echo "No changes to commit"
           git push
