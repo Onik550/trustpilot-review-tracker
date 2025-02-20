@@ -8,21 +8,37 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 
-# ✅ Auto-install compatible ChromeDriver
-chromedriver_autoinstaller.install()
+import os
+import logging
 
 # ✅ Ensure necessary directories exist
-BASE_DIR = os.getcwd()  # Works in both local & GitHub Actions
-LOG_DIR = os.path.join(BASE_DIR, "logs")
-DATA_DIR = os.path.join(BASE_DIR, "data")
+BASE_DIR = os.path.abspath(os.path.dirname(__file__))  # Get the script's directory
+ROOT_DIR = os.path.dirname(BASE_DIR)  # Get the project root directory
+LOG_DIR = os.path.join(ROOT_DIR, "logs")
+DATA_DIR = os.path.join(ROOT_DIR, "data")
 
+# ✅ Create directories if they do not exist
 os.makedirs(LOG_DIR, exist_ok=True)
 os.makedirs(DATA_DIR, exist_ok=True)
 
+# ✅ Set up database path correctly
+db_path = os.path.join(DATA_DIR, "trustpilot_reviews.db")  # Corrected path
+
 # ✅ Set up logging with a universal path
 log_file = os.path.join(LOG_DIR, "scraper_log.txt")  # ✅ This works in all environments
-
 logging.basicConfig(filename=log_file, level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
+
+# ✅ Debugging (print paths in logs)
+print(f"BASE_DIR: {BASE_DIR}")
+print(f"ROOT_DIR: {ROOT_DIR}")
+print(f"LOG_DIR: {LOG_DIR}")
+print(f"DATA_DIR: {DATA_DIR}")
+print(f"DB_PATH: {db_path}")
+
+# ✅ Ensure `db_path` is valid
+if not db_path:
+    raise ValueError("Database path is empty! Check directory structure.")
+
 
 
 # ✅ Set up Chrome options
