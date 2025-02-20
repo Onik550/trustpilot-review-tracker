@@ -11,16 +11,15 @@ from selenium.webdriver.common.keys import Keys
 # ✅ Auto-install compatible ChromeDriver
 chromedriver_autoinstaller.install()
 
-import os
-import logging
 
-# ✅ Ensure necessary directories exist
+
+# ✅ Get base and root directory
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))  # Get the script's directory
 ROOT_DIR = os.path.dirname(BASE_DIR)  # Get the project root directory
 LOG_DIR = os.path.join(ROOT_DIR, "logs")
 DATA_DIR = os.path.join(ROOT_DIR, "data")
 
-# ✅ Validate and create directories if they do not exist
+# ✅ Ensure directories exist
 for directory in [LOG_DIR, DATA_DIR]:
     if not os.path.exists(directory):
         os.makedirs(directory, exist_ok=True)
@@ -28,9 +27,14 @@ for directory in [LOG_DIR, DATA_DIR]:
 # ✅ Set up database path correctly
 db_path = os.path.join(DATA_DIR, "trustpilot_reviews.db")
 
-# ✅ Validate database path before proceeding
-if not db_path or not os.path.isdir(DATA_DIR):
-    raise FileNotFoundError(f"Invalid database path! Ensure DATA_DIR exists: {DATA_DIR}")
+# ✅ Fix: Check if db_path is valid before creating directories
+if not db_path or os.path.dirname(db_path) == "":
+    raise FileNotFoundError("Database path is invalid. Check directory structure.")
+
+# ✅ Ensure the parent directory for db_path exists before creating the file
+db_dir = os.path.dirname(db_path)
+if db_dir and not os.path.exists(db_dir):
+    os.makedirs(db_dir, exist_ok=True)
 
 # ✅ Set up logging with a universal path
 log_file = os.path.join(LOG_DIR, "scraper_log.txt")  # ✅ This works in all environments
@@ -48,6 +52,7 @@ logging.info(f"ROOT_DIR: {ROOT_DIR}")
 logging.info(f"LOG_DIR: {LOG_DIR}")
 logging.info(f"DATA_DIR: {DATA_DIR}")
 logging.info(f"DB_PATH: {db_path}")
+
 
 
 # ✅ Set up Chrome options
