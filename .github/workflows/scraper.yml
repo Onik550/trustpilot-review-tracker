@@ -28,8 +28,10 @@ jobs:
           sudo apt update
           sudo apt install -y google-chrome-stable
 
-      - name: Ensure Logs Directory Exists  # ✅ Add this before running the scraper
-        run: mkdir -p logs  
+      - name: Ensure Necessary Directories Exist  # ✅ Ensure `logs/` and `data/` exist before running
+        run: |
+          mkdir -p logs
+          mkdir -p data  
 
       - name: Run Scraper
         run: python scripts/trustpilot_scraper.py
