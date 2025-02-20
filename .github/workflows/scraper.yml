@@ -1,0 +1,33 @@
+name: Trustpilot Scraper Automation
+
+on:
+  schedule:
+    - cron: "0 0 * * *"  # Runs every 24 hours at midnight UTC
+  workflow_dispatch:  # Allows manual execution
+
+jobs:
+  scrape_data:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set Up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+
+      - name: Install Dependencies
+        run: |
+          pip install -r requirements.txt
+
+      - name: Run Scraper
+        run: python scripts/trustpilot_scraper.py
+
+      - name: Commit & Push Updated Data
+        run: |
+          git config --global user.email "rkonik550@gmail.com"
+          git config --global user.name "Onik550"
+          git add data/trustpilot_reviews.db data/trustpilot_reviews.csv
+          git commit -m "Auto-update scraped Trustpilot reviews"
+          git push
