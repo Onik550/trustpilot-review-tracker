@@ -11,6 +11,16 @@ from selenium.webdriver.common.keys import Keys
 # ✅ Auto-install compatible ChromeDriver
 chromedriver_autoinstaller.install()
 
+# ✅ Ensure necessary directories exist
+BASE_DIR = os.getcwd()  # Works in both local & GitHub Actions
+LOG_DIR = os.path.join(BASE_DIR, "logs")
+DATA_DIR = os.path.join(BASE_DIR, "data")
+
+os.makedirs(LOG_DIR, exist_ok=True)
+os.makedirs(DATA_DIR, exist_ok=True)
+
+
+
 # ✅ Set up logging
 log_file = "C:\\Users\\acer\\trustpilot_review_tracker\\logs\\scraper_log.txt"
 os.makedirs(os.path.dirname(log_file), exist_ok=True)
