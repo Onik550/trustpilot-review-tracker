@@ -8,6 +8,9 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 
+# ✅ Auto-install compatible ChromeDriver
+chromedriver_autoinstaller.install()
+
 import os
 import logging
 
@@ -17,12 +20,17 @@ ROOT_DIR = os.path.dirname(BASE_DIR)  # Get the project root directory
 LOG_DIR = os.path.join(ROOT_DIR, "logs")
 DATA_DIR = os.path.join(ROOT_DIR, "data")
 
-# ✅ Create directories if they do not exist
-os.makedirs(LOG_DIR, exist_ok=True)
-os.makedirs(DATA_DIR, exist_ok=True)
+# ✅ Validate and create directories if they do not exist
+for directory in [LOG_DIR, DATA_DIR]:
+    if not os.path.exists(directory):
+        os.makedirs(directory, exist_ok=True)
 
 # ✅ Set up database path correctly
-db_path = os.path.join(DATA_DIR, "trustpilot_reviews.db")  # Corrected path
+db_path = os.path.join(DATA_DIR, "trustpilot_reviews.db")
+
+# ✅ Validate database path before proceeding
+if not db_path or not os.path.isdir(DATA_DIR):
+    raise FileNotFoundError(f"Invalid database path! Ensure DATA_DIR exists: {DATA_DIR}")
 
 # ✅ Set up logging with a universal path
 log_file = os.path.join(LOG_DIR, "scraper_log.txt")  # ✅ This works in all environments
@@ -35,10 +43,11 @@ print(f"LOG_DIR: {LOG_DIR}")
 print(f"DATA_DIR: {DATA_DIR}")
 print(f"DB_PATH: {db_path}")
 
-# ✅ Ensure `db_path` is valid
-if not db_path:
-    raise ValueError("Database path is empty! Check directory structure.")
-
+logging.info(f"BASE_DIR: {BASE_DIR}")
+logging.info(f"ROOT_DIR: {ROOT_DIR}")
+logging.info(f"LOG_DIR: {LOG_DIR}")
+logging.info(f"DATA_DIR: {DATA_DIR}")
+logging.info(f"DB_PATH: {db_path}")
 
 
 # ✅ Set up Chrome options
