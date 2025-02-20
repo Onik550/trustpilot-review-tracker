@@ -19,12 +19,11 @@ DATA_DIR = os.path.join(BASE_DIR, "data")
 os.makedirs(LOG_DIR, exist_ok=True)
 os.makedirs(DATA_DIR, exist_ok=True)
 
+# ✅ Set up logging with a universal path
+log_file = os.path.join(LOG_DIR, "scraper_log.txt")  # ✅ This works in all environments
 
-
-# ✅ Set up logging
-log_file = "C:\\Users\\acer\\trustpilot_review_tracker\\logs\\scraper_log.txt"
-os.makedirs(os.path.dirname(log_file), exist_ok=True)
 logging.basicConfig(filename=log_file, level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
+
 
 # ✅ Set up Chrome options
 options = webdriver.ChromeOptions()
