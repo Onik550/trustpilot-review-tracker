@@ -2,3 +2,5 @@ selenium
 pandas
 undetected-chromedriver
 webdriver-manager
+chromedriver-autoinstaller
+
